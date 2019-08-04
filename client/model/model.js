@@ -16,7 +16,8 @@ class ToDos {
   }
 
   addToDo({name, isCompleted}) {
-    if(!this.all.map(({name: tname}) => tname).includes(name)) this.all.push(new ToDo({name, isCompleted}))
+    if(!this.all.map(({name: tname}) => tname).includes(name))
+      this.all = [...this.all, (new ToDo({name, isCompleted}))]
     return this.getAll();
   }
 

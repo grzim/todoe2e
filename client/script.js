@@ -1,15 +1,17 @@
 import {view} from "./view/view.js"
-import toDos from "./model.js"
+import {addEventListeners} from "./dispatcher/events.js"
+import toDos from "./model/model.js"
 import {
   addTaskDispatch,
   deleteTaskDispatch,
   editTaskDispatch
 } from "./dispatcher/dispatcher.js"
-import {addEventListeners} from "./dispatcher/events.js"
 
-export async function init() {
-  const mainContainer = document.querySelector('#main-container');
-  const renderer = view(mainContainer);
+const mainContainer = document.querySelector('#main-container');
+export const renderer = view(mainContainer);
+
+export function init() {
   addEventListeners(mainContainer, toDos)
   renderer(toDos, {deleteTaskDispatch, addTaskDispatch, editTaskDispatch})
 }
+init();
