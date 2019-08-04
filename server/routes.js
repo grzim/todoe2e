@@ -1,4 +1,4 @@
-import {create_a_toDo, delete_a_toDo, delete_all_toDo, list_all_toDos, read_a_toDo, update_a_toDo} from "./controller"
+import {create_a_toDo, delete_a_toDo, delete_all_toDo, list_all_toDos, get_details, update_a_toDo} from "./controller"
 
 export default (app) => {
 
@@ -9,7 +9,7 @@ export default (app) => {
     .delete(delete_all_toDo);
 
   app.route('/todos/:todoId')
-    .get(read_a_toDo)
+    .get(get_details)
     .put(update_a_toDo)
     .delete(delete_a_toDo);
 };

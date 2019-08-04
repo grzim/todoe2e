@@ -1,4 +1,4 @@
-class ToDo {
+export class ToDo {
   constructor({name, isCompleted}) {
     this.name = name;
     this.isCompleted = isCompleted;
@@ -22,13 +22,11 @@ class ToDos {
   }
 
   getAll() {
-    console.log(this.all)
     return this.all;
   }
 
-  getDetails({name}) {
-    this.all = this.all.filter(t => t.name === name)[0];
-    return this.getAll();
+  getDetails({name} = {}) {
+    return this.all.filter(t => t.name === name)[0];
   }
 
   deleteToDo({name}) {
@@ -47,4 +45,4 @@ class ToDos {
 }
 
 
-export default new ToDos(new ToDo({name: 'clean house', isCompleted: false}));
+export default new ToDos();

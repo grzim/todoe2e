@@ -4,9 +4,10 @@ import cors from 'cors';
 import "./model";
 import router from './routes';
 import mongoose from "mongoose"
+import {apiPort} from "../commons/config"
 
 const app = express(),
-  port = process.env.PORT || 3000;
+  port = process.env.PORT || apiPort;
 
 mongoose.connect('mongodb://localhost/Tododb');
 

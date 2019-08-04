@@ -14,12 +14,12 @@ export const create_a_toDo = (req, res) => {
   new_toDo.save((err, toDo) => {
     if (err)
       res.send(err);
-    res.json(toDo);
+    list_all_toDos(req, res);
   });
 };
 
 
-export const read_a_toDo = (req, res) => {
+export const get_details = (req, res) => {
   ToDos.findById(req.params.todoId, (err, toDo) => {
     if (err)
       res.send(err);
@@ -31,7 +31,7 @@ export const update_a_toDo = (req, res) => {
   ToDos.findOneAndUpdate({_id: req.params.todoId}, req.body, {new: true}, (err, toDo) => {
     if (err)
       res.send(err);
-    res.json(toDo);
+    list_all_toDos(req, res);
   })
 };
 
@@ -42,7 +42,7 @@ export const delete_a_toDo = (req, res) => {
   }, (err) => {
     if (err)
       res.send(err);
-    res.json({ message: 'ToDo successfully deleted' });
+    list_all_toDos(req, res);
   });
 };
 
@@ -52,6 +52,6 @@ export const delete_all_toDo = (req, res) => {
   ToDos.deleteMany({}, (err) => {
     if (err)
       res.send(err);
-    res.json({ message: 'All ToDos successfully deleted' });
+    list_all_toDos(req, res);
   });
 };

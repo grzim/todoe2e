@@ -6,13 +6,15 @@ import {
   deleteTaskDispatch,
   editTaskDispatch
 } from "./dispatcher/dispatcher.js"
-import {reactiveTasks} from "./model/proxy.js"
+import {reactiveTasks} from "./proxies/reactive-proxy.js"
+import {serverTasks, refresh} from "./proxies/fetch-proxy.js"
 
 const mainContainer = document.querySelector('#main-container');
 export const renderer = view(mainContainer);
 
 export function init() {
-  addEventListeners(mainContainer, reactiveTasks)
+  addEventListeners(mainContainer, serverTasks)
+  serverTasks[refresh]();
   renderer(reactiveTasks, {deleteTaskDispatch, addTaskDispatch, editTaskDispatch})
 }
 init();
