@@ -1,6 +1,6 @@
-export const events = ['addToDo', 'deleteToDo','editToDo'];
+export const events = ['addToDo', 'deleteToDo','editToDo', 'filterToDos'];
 
-export const [addToDoEvent, deleteToDoEvent, editToDoEvent] =
+export const [addToDoEvent, deleteToDoEvent, editToDoEvent, filterToDosEvent] =
   events
     .map(eventName =>
       (detail) => new CustomEvent(eventName, {detail, bubbles: true }) )

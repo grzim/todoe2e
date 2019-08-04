@@ -1,4 +1,5 @@
-import {serverUrl} from "../../commons/config.js"
+import {serverUrl, debounceTime} from "../../commons/config.js"
+import {debounce} from "../../commons/debounce.js"
 
 export async function getAll() {
   const response = await fetch(serverUrl);
@@ -25,3 +26,8 @@ export async function deleteToDo(data) {
   return await response.json();
 }
 
+const debounced = debounce();
+export async function filterToDos(phrase) {
+  const callback = (phrase) => fetch(serverUrl + 'includes/' + phrase).then(response => response.json() || [])
+  return await debounced(debounceTime, phrase, callback);
+}

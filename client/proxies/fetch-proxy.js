@@ -13,7 +13,7 @@ const makeServerProxy = (obj) =>  new Proxy(obj, {
       return async (arg = {}, payload) => {
         if(!facade[prop]) return target[prop];
         const item = target.getDetails(arg) || arg;
-        item.todoId = item._id;
+        if(typeof item === 'object') item.todoId = item._id;
         const serverTasks = await facade[prop](item, payload);
         target.deleteAll();
         target.addToDos(...serverTasks);

@@ -34,3 +34,9 @@ export const actionAdd = function(dispatch, parentNode){
   return (() => toDo.removeEventListener('click' ,addTaskOfName));
 }
 
+export const getFiltered = (dispatcher, parentNode) => {
+  const filterNamesInput = parentNode.querySelector('#filter-names');
+  const getFilteredCallback = () => dispatcher(filterNamesInput.value)(filterNamesInput);
+  filterNamesInput.addEventListener('keyup', getFilteredCallback) ;
+  return (() => filterNamesInput.removeEventListener('keyup' ,getFilteredCallback));
+}

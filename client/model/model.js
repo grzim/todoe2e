@@ -21,6 +21,10 @@ class ToDos {
     return this.getAll();
   }
 
+  filterToDos(phrase) {
+    return this.all.filter(t => t.name.includes(phrase));
+  }
+
   getAll() {
     return this.all;
   }

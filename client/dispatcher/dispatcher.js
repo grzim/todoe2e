@@ -1,4 +1,4 @@
-import {addToDoEvent, deleteToDoEvent, editToDoEvent} from "./events.js"
+import {addToDoEvent, deleteToDoEvent, editToDoEvent, filterToDosEvent} from "./events.js"
 
 export const addTaskDispatch = function (name) {
   return function (node) {
@@ -17,3 +17,11 @@ export const editTaskDispatch = function (originalName, data) {
     node.dispatchEvent(editToDoEvent([{name: originalName}, data]))
   }
 }
+
+export const filterToDosDispatch = function (value) {
+  return function (node) {
+    node.dispatchEvent(filterToDosEvent(value))
+  }
+}
+
+export default {deleteTaskDispatch, addTaskDispatch, editTaskDispatch, filterToDosDispatch}

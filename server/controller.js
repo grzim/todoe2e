@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
+import {debounce} from "../commons/debounce"
+import {debounceTime} from "../commons/config"
 const ToDos = mongoose.model('ToDos');
+
+const debounced = debounce()
 
 export const list_all_toDos = (req, res) => {
   ToDos.find({}, (err, toDo) => {
@@ -18,7 +22,6 @@ export const create_a_toDo = (req, res) => {
   });
 };
 
-
 export const get_details = (req, res) => {
   ToDos.findById(req.params.todoId, (err, toDo) => {
     if (err)
@@ -35,7 +38,6 @@ export const update_a_toDo = (req, res) => {
   })
 };
 
-
 export const delete_a_toDo = (req, res) => {
   ToDos.remove({
     _id: req.params.todoId
@@ -47,11 +49,21 @@ export const delete_a_toDo = (req, res) => {
 };
 
 
-
 export const delete_all_toDo = (req, res) => {
   ToDos.deleteMany({}, (err) => {
     if (err)
       res.send(err);
     list_all_toDos(req, res);
   });
+};
+
+export const list_toDos_including = async function({params: {phrase}}, res) {
+  await debounced(debounceTime, null, (_, phrase, res) =>{
+    if(!phrase) list_all_toDos(_, res);
+    else ToDos.find(phrase ? {name: {$regex: phrase}} : {}, (err, task) => {
+        if (err)
+          res.send(err);
+        res.json(task);
+      },
+    )},(_, res) => res.end(), phrase, res);
 };
