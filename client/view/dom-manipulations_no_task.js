@@ -1,4 +1,4 @@
-import {editTask, toggleCompletionTask} from "./ui-actions.js"
+import {editTask, toggleCompletionTask} from "./ui-actions_no_task.js"
 
 export const clearHTML = (container, containerCopy, parent) => {
   document.getElementById('incompletetasks').innerHTML = ''

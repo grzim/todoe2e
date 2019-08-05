@@ -17,6 +17,7 @@ mongoose.connect('mongodb://localhost/Tododb');
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type : '*/*' }));
+// add authentication middleware
 wsInit(app, expressWs);
 router(app);
 app.listen(port);

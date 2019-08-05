@@ -1,6 +1,6 @@
-import {actionAdd} from "./ui-actions.js"
-import {clearHTML, createTaskNode} from "./dom-manipulations.js"
-import {getFiltered} from "./ui-actions.js"
+import {actionAdd} from "./ui-actions_no_task.js"
+import {clearHTML, createTaskNode} from "./dom-manipulations_no_task.js"
+import {getFiltered} from "./ui-actions_no_task.js"
 
 export const view = (mainContainer) => {
   let tasksCleaner = [];

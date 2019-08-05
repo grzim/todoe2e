@@ -1,4 +1,4 @@
-import {addToDoEvent, deleteToDoEvent, editToDoEvent, filterToDosEvent} from "./events.js"
+import {addToDoEvent, deleteToDoEvent, editToDoEvent, filterToDosEvent} from "./events_no_task.js"
 
 export const addTaskDispatch = function (name) {
   return function (node) {

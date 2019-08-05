@@ -1,6 +1,6 @@
 import toDos from "../model/model.js"
-import {renderer} from "../script.js"
-import dispatcher from "../dispatcher/dispatcher.js"
+import {renderer} from "../script_no_task.js"
+import dispatcher from "../dispatcher/dispatcher_no_task.js"
 
 const makeReactiveProxy = obj => new Proxy(obj, {
   set

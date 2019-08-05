@@ -1,6 +1,6 @@
 import * as facade from '../facade/facade.js'
 import {ToDo} from "../model/model.js"
-import {reactiveTasks} from "./reactive-proxy.js"
+import {reactiveTasks} from "./reactive-proxy_no_task.js"
 
 export const refresh = Symbol('refresh');
 

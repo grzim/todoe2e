@@ -1,24 +1,48 @@
 import mongoose from 'mongoose';
-import {debounce} from "../commons/debounce"
-import {debounceTime} from "../commons/config"
 import { expressWs } from "./index"
 const ToDos = mongoose.model('ToDos');
 
-const debounced = debounce()
+// Task: Return completed tasks
+// add function that will be added to ulr /todos/completed/
+// it should return all completed tasks in DB
+// take care of correct routes registration
 
-const sendAllToDosOverWs = (res) => ToDos.find({}, (err, toDos) => {
-  if (err)
-    res.send(err);
-  res.send("OK");
-  [...expressWs.getWss().clients][0].send(JSON.stringify({type: 'update', data: toDos}))
-});
+// Task: Return completed or incompleted tasks
+// add function that will be added to ulr /todos/completed/:isCompleted
+// it should return all tasks which isCompleted property is equal to route parameter isCompleted
 
-export const list_all_toDos = (req, res) => {
+const sendAllToDos = (res) => {
   ToDos.find({}, (err, toDo) => {
     if (err)
       res.send(err);
     res.json(toDo);
   });
+}
+
+const notifyWithNewTodos = (req, res) => {
+  // so far we are just sending back list of all todos
+  sendAllToDos(res)
+  // // in order to switch to ws notifications add implementation to this funciton -> Task: updates via WebSocket
+  // // when the implementation is provided the above function can be commented out
+  // sendAllToDosOverWs(res)
+}
+
+// Task: updates via WebSocket
+// add ws notification that will be send when toDos are updated
+const sendAllToDosOverWs = (res) => ToDos.find({}, (err, toDos) => {
+  // this line will give us the pointer to websocket we are using in the app
+  const webSocket = [...expressWs.getWss().clients][0];
+  if (err)
+    res.send(err);
+
+  // here whe should send over the ws a stringified (use JSON.stringify) object with propertied type and data
+  // webSocket.send ....
+});
+
+
+
+export const list_all_toDos = (req, res) => {
+  sendAllToDos(req, res);
 };
 
 export const create_a_toDo = (req, res) => {
@@ -30,11 +54,12 @@ export const create_a_toDo = (req, res) => {
   });
 };
 
+// Task 'queryParams': add query params handing here
 export const get_details = ({params: {name}, query}, res) => {
-  ToDos.findOne({name},[].concat(query.param).join(" "), (err, toDo) => {
+  ToDos.findOne(({name}), (err, toDo) => {
     if (err)
       res.send(err);
-    sendAllToDosOverWs();
+    res.send(toDo);
   })
 };
 
@@ -42,7 +67,7 @@ export const update_a_toDo = ({body, params: {name}}, res) => {
   ToDos.findOneAndUpdate({name}, body, {new: true}, (err, toDo) => {
     if (err)
       res.send(err);
-    sendAllToDosOverWs(res);
+    notifyWithNewTodos(res);
   })
 };
 
@@ -52,7 +77,7 @@ export const delete_a_toDo = ({params: {name}}, res) => {
   }, (err) => {
     if (err)
       res.send(err);
-    sendAllToDosOverWs();
+    notifyWithNewTodos();
   });
 };
 
@@ -61,18 +86,27 @@ export const delete_all_toDo = (req, res) => {
   ToDos.deleteMany({}, (err) => {
     if (err)
       res.send(err);
-    sendAllToDosOverWs();
+    notifyWithNewTodos();
   });
 };
 
-export const list_toDos_including = async function({params: {phrase}}, res) {
-  await debounced(debounceTime, null, (_, phrase, res) =>{
-    if(!phrase) list_all_toDos(_, res);
-    else ToDos.find(phrase ? {name: {$regex: phrase}} : {}, (err, task) => {
+// Task: Filtering of toDos
+// add functionality to return only todos that consist of phrase sent in req
+export const list_toDos_including = async (body /* use destructring here to get the phrase*/, res) => {
+    // if no phrase provided return all toDos
+
+  // when there is a phrase all tasks will be returned with the following implementaion:
+    ToDos.find(phrase ? {name: {$regex: phrase}} : {}, (err, task) => {
         if (err)
           res.send(err);
         console.log(phrase)
         res.json(task);
       },
-    )},(_, res) => res.end(), phrase, res);
+    );
+  // solve issues in routes.js file if you get some errors.
+  // It will be probably connected with the fact that router
+  // checks against every route pattern in the order in which rotues have been registered in app
 };
+
+// *Advanced Task: Server Side Debounce
+// add functionality that server will not respond to every query but will be responding after 2 seconds after the last query (debounce)
