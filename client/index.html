@@ -7,15 +7,22 @@
 <body>
 <div class="main-container" id="main-container">
     <div class="left-side">
-        <p>
-            <label for="filter-names">Filter names</label>
-            <input id="filter-names">
-        <div id="filtered"></div>
-        </p>
     </div>
     <div class="wrapper">
         <div class="container" id="container">
-
+            <div>
+                <button id="block" class="block-buttons">
+                    block
+                </button>
+                <button id="unblock" class="block-buttons">
+                    unblock
+                </button>
+            </div>
+            <p>
+                <label for="filter-names">Filter names</label>
+                <input id="filter-names">
+            <div id="filtered"></div>
+            </p>
             <p>
                 <label for="newtask">Add Item</label>
                 <input id="newtask" type="text">
@@ -30,6 +37,8 @@
             <ul id="completedtasks">
             </ul>
         </div>
+    </div>
+    <div class="right-side">
     </div>
 </div>
 </body>

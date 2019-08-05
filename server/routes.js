@@ -7,7 +7,6 @@ import {
   update_a_toDo,
   list_toDos_including
 } from "./controller"
-
 export default (app) => {
 
   // todoList Routes
@@ -16,12 +15,15 @@ export default (app) => {
     .post(create_a_toDo)
     .delete(delete_all_toDo);
 
-  app.route('/todos/:todoId')
-    .get(get_details)
-    .put(update_a_toDo)
-    .delete(delete_a_toDo);
+  app.route('/todos/includes/')
+    .get(list_all_toDos)
 
   app.route('/todos/includes/:phrase')
     .get(list_toDos_including)
+
+  app.route('/todos/:name')
+    .get(get_details)
+    .put(update_a_toDo)
+    .delete(delete_a_toDo);
 };
 

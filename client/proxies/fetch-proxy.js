@@ -12,11 +12,12 @@ const makeServerProxy = (obj) =>  new Proxy(obj, {
     else if(typeof target[prop] === 'function') {
       return async (arg = {}, payload) => {
         if(!facade[prop]) return target[prop];
-        const item = target.getDetails(arg) || arg;
-        if(typeof item === 'object') item.todoId = item._id;
+        const item = target.getDetails(arg) || arg
         const serverTasks = await facade[prop](item, payload);
-        target.deleteAll();
-        target.addToDos(...serverTasks);
+        if(prop === 'getAll') {
+          target.deleteAll();
+          target.addToDos(...serverTasks);
+        }
       }
     }
     else return target[prop]

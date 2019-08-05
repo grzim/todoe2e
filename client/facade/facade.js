@@ -11,23 +11,23 @@ export async function addToDo(data) {
     method: "POST",
     body: JSON.stringify(data)
   });
-  return await response.json();
+ // return await response.json();
 }
 
-export async function editToDo({todoId}, data) {
-  const response = await fetch(serverUrl + todoId, {method: "PUT",
-    body: JSON.stringify({...data, todoId}) });
-  return await response.json();
+export async function editToDo({name}, data) {
+  const response = await fetch(serverUrl + name, {method: "PUT",
+    body: JSON.stringify({...data, name}) });
+  //return await response.json();
 }
 
 export async function deleteToDo(data) {
-  const response = await fetch(serverUrl + data.todoId, {method: "DELETE",
+  const response = await fetch(serverUrl + data.name, {method: "DELETE",
     body: JSON.stringify(data) });
-  return await response.json();
+ // return await response.json();
 }
 
 const debounced = debounce();
 export async function filterToDos(phrase) {
   const callback = (phrase) => fetch(serverUrl + 'includes/' + phrase).then(response => response.json() || [])
-  return await debounced(debounceTime, phrase, callback);
+  return await debounced(0, phrase, callback);
 }

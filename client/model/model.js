@@ -1,5 +1,5 @@
 export class ToDo {
-  constructor({name, isCompleted}) {
+  constructor({name, isCompleted} = {}) {
     this.name = name;
     this.isCompleted = isCompleted;
   }

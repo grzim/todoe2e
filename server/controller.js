@@ -1,9 +1,17 @@
 import mongoose from 'mongoose';
 import {debounce} from "../commons/debounce"
 import {debounceTime} from "../commons/config"
+import { expressWs } from "./index"
 const ToDos = mongoose.model('ToDos');
 
 const debounced = debounce()
+
+const sendAllToDosOverWs = (res) => ToDos.find({}, (err, toDos) => {
+  if (err)
+    res.send(err);
+  res.send("OK");
+  [...expressWs.getWss().clients][0].send(JSON.stringify({type: 'update', data: toDos}))
+});
 
 export const list_all_toDos = (req, res) => {
   ToDos.find({}, (err, toDo) => {
@@ -18,33 +26,33 @@ export const create_a_toDo = (req, res) => {
   new_toDo.save((err, toDo) => {
     if (err)
       res.send(err);
-    list_all_toDos(req, res);
+    sendAllToDosOverWs(res);
   });
 };
 
-export const get_details = (req, res) => {
-  ToDos.findById(req.params.todoId, (err, toDo) => {
+export const get_details = ({params: {name}, query}, res) => {
+  ToDos.findOne({name},[].concat(query.param).join(" "), (err, toDo) => {
     if (err)
       res.send(err);
-    res.json(toDo);
+    sendAllToDosOverWs();
   })
 };
 
-export const update_a_toDo = (req, res) => {
-  ToDos.findOneAndUpdate({_id: req.params.todoId}, req.body, {new: true}, (err, toDo) => {
+export const update_a_toDo = ({body, params: {name}}, res) => {
+  ToDos.findOneAndUpdate({name}, body, {new: true}, (err, toDo) => {
     if (err)
       res.send(err);
-    list_all_toDos(req, res);
+    sendAllToDosOverWs(res);
   })
 };
 
-export const delete_a_toDo = (req, res) => {
+export const delete_a_toDo = ({params: {name}}, res) => {
   ToDos.remove({
-    _id: req.params.todoId
+    name
   }, (err) => {
     if (err)
       res.send(err);
-    list_all_toDos(req, res);
+    sendAllToDosOverWs();
   });
 };
 
@@ -53,7 +61,7 @@ export const delete_all_toDo = (req, res) => {
   ToDos.deleteMany({}, (err) => {
     if (err)
       res.send(err);
-    list_all_toDos(req, res);
+    sendAllToDosOverWs();
   });
 };
 
@@ -63,6 +71,7 @@ export const list_toDos_including = async function({params: {phrase}}, res) {
     else ToDos.find(phrase ? {name: {$regex: phrase}} : {}, (err, task) => {
         if (err)
           res.send(err);
+        console.log(phrase)
         res.json(task);
       },
     )},(_, res) => res.end(), phrase, res);

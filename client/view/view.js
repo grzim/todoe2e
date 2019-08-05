@@ -10,6 +10,9 @@ export const view = (mainContainer) => {
   return (tasks, {deleteTaskDispatch, addTaskDispatch, editTaskDispatch, filterToDosDispatch}) => {
     tasksCleaner.forEach(cleaner => cleaner());
     clearHTML(container, containerCopy, parent);
+    const filterNamesInput = mainContainer.querySelector('#filter-names');
+    filterNamesInput.focus();
+    filterNamesInput.setSelectionRange(filterNamesInput.value.length, filterNamesInput.value.length);
     tasksCleaner = [...tasks.getAll()
       .map(createTaskNode({deleteTaskDispatch, addTaskDispatch, editTaskDispatch})),
       actionAdd(addTaskDispatch, parent),

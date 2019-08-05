@@ -6,7 +6,7 @@ body {
 }
 .main-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
 .container {
     display: block;
