@@ -6,6 +6,7 @@ const detailsButton = document.getElementById("get-value")
 const placeholder = document.getElementById("details-placeholder")
 const selectedProps = document.getElementById("get-value");
 
+export const ws = new WebSocket(wsUrl)
 
 
 detailsButton.addEventListener('click', async (e) => {

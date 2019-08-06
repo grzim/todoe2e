@@ -9,8 +9,7 @@ const debounced = debounce()
 const sendAllToDosOverWs = (res) => ToDos.find({}, (err, toDos) => {
   if (err)
     res.send(err);
-  res.send("OK");
-  [...expressWs.getWss().clients][0].send(JSON.stringify({type: 'update', data: toDos}))
+  else [...expressWs.getWss().clients][0].send(JSON.stringify({type: 'update', data: toDos}))
 });
 
 export const list_all_toDos = (req, res) => {
@@ -34,7 +33,9 @@ export const get_details = ({params: {name}, query}, res) => {
   ToDos.findOne({name},[].concat(query.param).join(" "), (err, toDo) => {
     if (err)
       res.send(err);
-    sendAllToDosOverWs();
+    else {
+      sendAllToDosOverWs();
+    }
   })
 };
 
