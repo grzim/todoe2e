@@ -4,6 +4,8 @@ import {debounce} from "../../commons/debounce.js"
 // Task: Facade
 // implement all of missing functions
 export async function getAll() {
+  const response = await fetch(serverUrl);
+  return await response.json();
 }
 
 export async function addToDo(data) {

@@ -19,7 +19,7 @@ const sendAllToDos = (res) => {
   });
 }
 
-const notifyWithNewTodos = (req, res) => {
+const notifyWithNewTodos = (res) => {
   // so far we are just sending back list of all todos
   sendAllToDos(res)
   // // in order to switch to ws notifications add implementation to this funciton -> Task: updates via WebSocket
@@ -42,15 +42,17 @@ const sendAllToDosOverWs = (res) => ToDos.find({}, (err, toDos) => {
 
 
 export const list_all_toDos = (req, res) => {
-  sendAllToDos(req, res);
+  sendAllToDos(res);
 };
 
 export const create_a_toDo = (req, res) => {
+  // Task: add only when unique
+  // check if the name already exist and if so do not add it
   const new_toDo = new ToDos(req.body);
   new_toDo.save((err, toDo) => {
     if (err)
       res.send(err);
-    sendAllToDosOverWs(res);
+    notifyWithNewTodos(res);
   });
 };
 
@@ -77,7 +79,7 @@ export const delete_a_toDo = ({params: {name}}, res) => {
   }, (err) => {
     if (err)
       res.send(err);
-    notifyWithNewTodos();
+    notifyWithNewTodos(res);
   });
 };
 
@@ -86,7 +88,7 @@ export const delete_all_toDo = (req, res) => {
   ToDos.deleteMany({}, (err) => {
     if (err)
       res.send(err);
-    notifyWithNewTodos();
+    notifyWithNewTodos(res);
   });
 };
 
