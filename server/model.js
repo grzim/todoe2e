@@ -21,6 +21,7 @@ const ToDosSchema = new Schema({
   // age (only positives less than 100)
   // you can use custom or build in validators
   // update class_ToDo in model in the frontend accordingly
+  // https://mongoosejs.com/docs/validation.html#built-in-validators
 });
 
-export default mongoose.model('ToDos', ToDosSchema);
+mongoose.model('ToDos', ToDosSchema);

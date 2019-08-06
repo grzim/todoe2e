@@ -16,6 +16,11 @@ export default (app) => {
     .delete(delete_all_toDo);
 
 
+  app.route('/todos/:id')
+      .get(list_all_toDos)
+      .post(add_toDo)
+      .delete(delete_all_toDo);
+
   app.route('/todos/includes/:phrase')
 //    uncomment after the implementation of list_toDos_including function
 //    .get(list_toDos_including)
