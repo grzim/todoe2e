@@ -6,9 +6,12 @@ const placeholder = document.getElementById("details-placeholder")
 const selectedProps = document.getElementById("get-value");
 
 
+// Task: get selected properties
+// get from server chosen toDo
+// return only properties that are selected
 
 detailsButton.addEventListener('click', async (e) => {
-  // we get the array of all values seleded in checkboxes, so the array of all properties that should be retrieved
+  // we get the array of all values selected in checkboxes, so the array of all properties that should be retrieved
   const selectedProps = [...document.querySelectorAll('.props:checked')]
     .map(({value}) => value);
 

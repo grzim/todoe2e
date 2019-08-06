@@ -11,6 +11,12 @@ const ToDos = mongoose.model('ToDos');
 // add function that will be added to ulr /todos/completed/:isCompleted
 // it should return all tasks which isCompleted property is equal to route parameter isCompleted
 
+
+// Task: Fill the db
+// Add mechanism that will generate N objects with random values (but correct against validators)
+// all objects should be added to the DB (only when unique)
+// Mechanism should be attached to the url /todos/fill/:n
+
 const sendAllToDos = (res) => {
   ToDos.find({}, (err, toDo) => {
     if (err)
@@ -22,6 +28,7 @@ const sendAllToDos = (res) => {
 const notifyWithNewTodos = (res) => {
   // so far we are just sending back list of all todos
   sendAllToDos(res)
+  // Task: updates via WebSocket
   // // in order to switch to ws notifications add implementation to this funciton -> Task: updates via WebSocket
   // // when the implementation is provided the above function can be commented out
   // sendAllToDosOverWs(res)
@@ -45,9 +52,11 @@ export const list_all_toDos = (req, res) => {
   sendAllToDos(res);
 };
 
-export const create_a_toDo = (req, res) => {
+
+
+export const add_toDo = (req, res) => {
   // Task: add only when unique
-  // check if the name already exist and if so do not add it
+  // check if the name already exists and if so do not add it
   const new_toDo = new ToDos(req.body);
   new_toDo.save((err, toDo) => {
     if (err)
@@ -56,7 +65,16 @@ export const create_a_toDo = (req, res) => {
   });
 };
 
-// Task 'queryParams': add query params handing here
+
+export const add_toDos = (req, res) => {
+  // Task: implement adding many todos
+  // check for every toDos if the name already exist and if so do not add it
+  // when data will be send POST /todos/ there should be functionality to distinguish if one object should be added
+  // or array (distinguish between add_toDo and add)toDos
+};
+
+
+// Task 'queryParams': add query params handing for obtaining only properties that have been sent from client
 export const get_details = ({params: {name}, query}, res) => {
   ToDos.findOne(({name}), (err, toDo) => {
     if (err)

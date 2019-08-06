@@ -1,5 +1,5 @@
 import {
-  create_a_toDo,
+  add_toDo,
   delete_a_toDo,
   delete_all_toDo,
   list_all_toDos,
@@ -12,7 +12,7 @@ export default (app) => {
   // todoList Routes
   app.route('/todos')
     .get(list_all_toDos)
-    .post(create_a_toDo)
+    .post(add_toDo)
     .delete(delete_all_toDo);
 
 
