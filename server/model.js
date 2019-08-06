@@ -10,6 +10,20 @@ const ToDosSchema = new Schema({
   isCompleted: {
     type: Boolean,
     default: false
+  },
+  author: {
+    name: {
+      type: String,
+      match: /^[A-Z][a-zA-Z]*$/
+    },
+    surname: {
+
+    },
+    age: {
+      type: Number,
+      min: 0,
+      max: 100
+    }
   }
   // Task: add property
   // add property author (not required) to the schema

@@ -58,10 +58,11 @@ export const add_toDo = (req, res) => {
   // Task: add only when unique
   // check if the name already exists and if so do not add it
   const new_toDo = new ToDos(req.body);
-  new_toDo.save((err, toDo) => {
+
+  new_toDo.save({validateBeforeSave: true}, (err, toDo) => {
     if (err)
       res.send(err);
-    notifyWithNewTodos(res);
+   else notifyWithNewTodos(res);
   });
 };
 
@@ -79,7 +80,7 @@ export const get_details = ({params: {name}, query}, res) => {
   ToDos.findOne(({name}), (err, toDo) => {
     if (err)
       res.send(err);
-    res.send(toDo);
+    else res.send(toDo);
   })
 };
 
@@ -97,7 +98,7 @@ export const delete_a_toDo = ({params: {name}}, res) => {
   }, (err) => {
     if (err)
       res.send(err);
-    notifyWithNewTodos(res);
+    else notifyWithNewTodos(res);
   });
 };
 
@@ -106,7 +107,7 @@ export const delete_all_toDo = (req, res) => {
   ToDos.deleteMany({}, (err) => {
     if (err)
       res.send(err);
-    notifyWithNewTodos(res);
+    else notifyWithNewTodos(res);
   });
 };
 
@@ -117,10 +118,10 @@ export const list_toDos_including = async (body /* use destructring here to get 
 
   // when there is a phrase all tasks will be returned with the following implementaion:
     ToDos.find(phrase ? {name: {$regex: phrase}} : {}, (err, task) => {
+      console.log(phrase)
         if (err)
           res.send(err);
-        console.log(phrase)
-        res.json(task);
+        else  res.json(task);
       },
     );
   // solve issues in routes.js file if you get some errors.
