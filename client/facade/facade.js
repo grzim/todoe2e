@@ -29,5 +29,5 @@ export async function deleteToDo(data) {
 const debounced = debounce();
 export async function filterToDos(phrase) {
   const callback = (phrase) => fetch(serverUrl + 'includes/' + phrase).then(response => response.json() || [])
-  return await debounced(0, phrase, callback);
+  return await debounced(1000, phrase, callback);
 }

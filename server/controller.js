@@ -73,7 +73,7 @@ export const list_toDos_including = async function({params: {phrase}}, res) {
         if (err)
           res.send(err);
         console.log(phrase)
-        res.json(task);
+      res.json(task);
       },
     )},(_, res) => res.end(), phrase, res);
 };
